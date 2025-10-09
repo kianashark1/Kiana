@@ -1,0 +1,214 @@
+# --- Add these helper functions at the top, after imports (if any) ---
+def print_section_header(title):
+    print("\n" + "=" * 50)
+    print(f"{title.center(50)}")
+    print("=" * 50)
+
+def print_subsection_header(title):
+    print(f"\n{title}:")
+# --- End helper functions ---
+
+class Exercise:
+    """Represents a single exercise with its details."""
+    def __init__(self, name, duration, calories_burned):
+        self.name = name
+        self.duration = duration  # in minutes
+        self.calories_burned = calories_burned
+
+class SpiritualPractice:
+    """Represents a spiritual practice with its details."""
+    def __init__(self, name, duration):
+        self.name = name
+        self.duration = duration  # in minutes
+
+class MentalActivity:
+    """Represents a mental health activity with its details."""
+    def __init__(self, name, duration):
+        self.name = name
+        self.duration = duration  # in minutes
+
+class WellnessLog:
+    """Manages logs for physical, spiritual, and mental health activities."""
+    def __init__(self):
+        self.workouts = []
+        self.spirituals = []
+        self.mentals = []
+
+def create_personalized_routine():
+    print("=" * 50)
+    print("Welcome to Your Personalized Wellness Routine!".center(50))
+    print("=" * 50)
+    age = int(input("What is your age? "))
+    weight = float(input("What is your current weight (lbs)? "))
+    height = float(input("What is your height (inches)? "))
+    water_intake = float(input("How many cups of water do you drink per day? "))
+    skin_type = input("What is your skin type? (oily/dry/combination/normal): ").strip().lower()
+    skincare_concerns = input("Any skincare concerns (acne, dryness, sensitivity, etc.)? ").strip()
+    fitness_level = input("What is your fitness level? (beginner/intermediate/advanced): ").strip().lower()
+    goal = input("What is your main goal? (lose weight/build muscle/improve health): ").strip().lower()
+    resting_heartbeat = int(input("What is your resting heartbeat (bpm)? "))
+    diet = input("Briefly describe what you eat in a typical day: ").strip()
+    sleep_hours = float(input("How many hours do you sleep per night on average? "))
+    stress_level = input("How would you rate your stress? (low/medium/high): ").strip().lower()
+    # --- Additional personal/spiritual questions ---
+    wake_time = input("What time do you usually wake up? (HH:MM, 24-hour format): ").strip()
+    faith_importance = input("How important is your relationship with God to you? (not important/somewhat/very): ").strip().lower()
+    prayer_frequency = input("How often do you pray or meditate? (rarely/sometimes/daily): ").strip().lower()
+    community_involvement = input("Are you involved in any faith-based community or group? (yes/no): ").strip().lower()
+    gratitude_practice = input("Do you practice gratitude or thankfulness regularly? (yes/no): ").strip().lower()
+    # --- End additional questions ---
+    spiritual_pref = input("Preferred spiritual practice (prayer/meditation/scripture/all): ").strip().lower()
+    mental_pref = input("Preferred mental activity (journaling/gratitude/reflection): ").strip().lower()
+    available_time = int(input("How many minutes per day can you dedicate to wellness? "))
+
+    routine = WellnessLog()
+
+    # Physical routine logic
+    if fitness_level == "beginner":
+        ex_name = "Walking" if goal != "build muscle" else "Bodyweight Exercises"
+        ex_duration = min(30, available_time // 2)
+        ex_calories = 120 if ex_name == "Walking" else 150
+    elif fitness_level == "intermediate":
+        ex_name = "Jogging" if goal != "build muscle" else "Strength Circuit"
+        ex_duration = min(40, available_time // 2)
+        ex_calories = 250 if ex_name == "Jogging" else 300
+    else:
+        ex_name = "Running" if goal != "build muscle" else "HIIT & Weights"
+        ex_duration = min(45, available_time // 2)
+        ex_calories = 350 if ex_name == "Running" else 400
+    routine.workouts.append(Exercise(ex_name, ex_duration, ex_calories))
+
+    # Spiritual routine logic
+    if spiritual_pref == "all":
+        # Divide available time for spiritual equally among all practices
+        total_spiritual_time = min(15, available_time // 4)
+        per_practice_time = max(1, total_spiritual_time // 3)
+        routine.spirituals.append(SpiritualPractice("Prayer", per_practice_time))
+        routine.spirituals.append(SpiritualPractice("Meditation", per_practice_time))
+        routine.spirituals.append(SpiritualPractice("Scripture Reading", per_practice_time))
+        sp = None  # For display purposes below
+    elif spiritual_pref == "prayer":
+        sp = SpiritualPractice("Prayer", min(15, available_time // 4))
+        routine.spirituals.append(sp)
+    elif spiritual_pref == "meditation":
+        sp = SpiritualPractice("Meditation", min(15, available_time // 4))
+        routine.spirituals.append(sp)
+    else:
+        sp = SpiritualPractice("Scripture Reading", min(15, available_time // 4))
+        routine.spirituals.append(sp)
+
+    # Mental routine logic
+    if mental_pref == "journaling":
+        ma = MentalActivity("Journaling", min(10, available_time // 4))
+    elif mental_pref == "gratitude":
+        ma = MentalActivity("Gratitude Practice", min(10, available_time // 4))
+    else:
+        ma = MentalActivity("Reflection", min(10, available_time // 4))
+    routine.mentals.append(ma)
+
+    # --- Prettier output section ---
+    print_section_header("Your Personalized Routine")
+    print(f"Age: {age}")
+    print(f"Weight: {weight} lbs, Height: {height} inches")
+    print(f"Water Intake: {water_intake} cups/day")
+    print(f"Skin Type: {skin_type.capitalize()}")
+    print(f"Skincare Concerns: {skincare_concerns}")
+    print(f"Resting Heartbeat: {resting_heartbeat} bpm")
+    print(f"Typical Diet: {diet}")
+    print(f"Sleep: {sleep_hours} hours/night")
+    print(f"Wake Time: {wake_time}")
+    print(f"Stress Level: {stress_level.capitalize()}")
+    print(f"Goal: {goal.capitalize()}")
+    print(f"Relationship with God: {faith_importance.capitalize()} importance")
+    print(f"Prayer/Meditation Frequency: {prayer_frequency.capitalize()}")
+    print(f"Faith Community Involvement: {community_involvement.capitalize()}")
+    print(f"Gratitude Practice: {gratitude_practice.capitalize()}")
+
+    print_subsection_header("Physical")
+    print(f"  {ex_name} for {ex_duration} min ({ex_calories} kcal est.)")
+    print_subsection_header("Spiritual")
+    if spiritual_pref == "all":
+        for s in routine.spirituals:
+            print(f"  {s.name} for {s.duration} min")
+    else:
+        print(f"  {sp.name} for {sp.duration} min")
+    print_subsection_header("Mental")
+    print(f"  {ma.name} for {ma.duration} min")
+
+    print_section_header("Recommendations")
+    if resting_heartbeat > 90:
+        print("- Consider consulting a healthcare provider about your heart rate.")
+    if sleep_hours < 7:
+        print("- Try to increase your sleep for better recovery and mental health.")
+    if "vegetable" not in diet.lower():
+        print("- Add more vegetables to your diet for improved nutrition.")
+    if stress_level == "high":
+        print("- Prioritize stress management activities in your routine.")
+    if water_intake < 8:
+        print("- Try to drink at least 8 cups of water daily.")
+    if skin_type in ["dry", "sensitive"]:
+        print("- Use a gentle, hydrating skincare routine.")
+    if "acne" in skincare_concerns.lower():
+        print("- Consider non-comedogenic skincare products for acne-prone skin.")
+    # --- Additional recommendations ---
+    bmi = weight / (height * height) * 703
+    if bmi > 25:
+        print("- Your BMI is above the healthy range. Consider consulting a healthcare provider for weight management advice.")
+    if bmi < 18.5:
+        print("- Your BMI is below the healthy range. Consider consulting a healthcare provider about your nutrition.")
+    if age > 50:
+        print("- Include balance and flexibility exercises to support healthy aging.")
+    if "fruit" not in diet.lower():
+        print("- Add more fruits to your diet for vitamins and fiber.")
+    if "whole grain" not in diet.lower() and "brown rice" not in diet.lower():
+        print("- Try to include more whole grains for sustained energy.")
+    if "fish" not in diet.lower() and "omega" not in diet.lower():
+        print("- Consider adding sources of healthy fats like fish or flaxseed.")
+    if faith_importance == "very":
+        print("- Set aside time daily for prayer, scripture, or spiritual reflection.")
+    if prayer_frequency in ["rarely", "sometimes"]:
+        print("- Increasing your prayer or meditation frequency may help with peace and focus.")
+    if community_involvement == "no":
+        print("- Consider joining a faith-based community for support and encouragement.")
+    if gratitude_practice == "no":
+        print("- Practicing gratitude daily can improve your mental and spiritual well-being.")
+    print("=" * 50)
+
+    # --- Prettier sample daily schedule (optional addition) ---
+    import datetime
+    print_section_header("Sample Daily Schedule")
+    try:
+        wake_dt = datetime.datetime.strptime(wake_time, "%H:%M")
+    except Exception:
+        wake_dt = datetime.datetime.strptime("07:00", "%H:%M")
+    current_time = wake_dt
+    schedule = []
+    schedule.append((current_time.strftime("%I:%M %p"), "Wake up"))
+    current_time += datetime.timedelta(minutes=5)
+    schedule.append((current_time.strftime("%I:%M %p"), "Drink a glass of water"))
+    current_time += datetime.timedelta(minutes=10)
+    schedule.append((current_time.strftime("%I:%M %p"), "Skincare routine"))
+    current_time += datetime.timedelta(minutes=10)
+    schedule.append((current_time.strftime("%I:%M %p"), "Healthy breakfast"))
+    current_time += datetime.timedelta(minutes=20)
+    schedule.append((current_time.strftime("%I:%M %p"), f"{ex_name} ({ex_duration} min)"))
+    current_time += datetime.timedelta(minutes=ex_duration)
+    if spiritual_pref == "all":
+        for s in routine.spirituals:
+            schedule.append((current_time.strftime("%I:%M %p"), f"{s.name} ({s.duration} min)"))
+            current_time += datetime.timedelta(minutes=s.duration)
+    else:
+        schedule.append((current_time.strftime("%I:%M %p"), f"{sp.name} ({sp.duration} min)"))
+        current_time += datetime.timedelta(minutes=sp.duration)
+    schedule.append((current_time.strftime("%I:%M %p"), f"{ma.name} ({ma.duration} min)"))
+    current_time += datetime.timedelta(minutes=ma.duration)
+    schedule.append((current_time.strftime("%I:%M %p"), "Drink water and stretch"))
+    for t, activity in schedule:
+        print(f"{t} - {activity}")
+    print("=" * 50)
+    # --- End prettier schedule ---
+
+    return routine
+
+if __name__ == "__main__":
+    create_personalized_routine()
